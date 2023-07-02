@@ -13,8 +13,11 @@ class Locations:
     is_explored = False
     is_open = True
 
+    def __str__(self):
+        return f'{self.name}'
+
     def print_location_info(self):
-        print(f'Вы находитесь в локации {self.name}. '
+        print(f'Вы находитесь в локации {self}. '
               f'{self.description}\n'
               f'Далее вы можете:')
         print('------------------------------------------------------')
@@ -35,9 +38,10 @@ class Locations:
             self.items.append(item)
 
 
-class City(Locations):
-    name: str = 'Город'
-    description: str = 'Тут кипит шумная жизнь, люди постоянно снуют туда сюда.'
+class TumanskCity(Locations):
+    name: str = 'Туманск'
+    description: str = 'Расположенный в низине портовый город, куда стекаются торговцы, чтобы выгодно ' \
+                       'продать свои товары заморским купцам.'
     actions: dict = dict()
     location_monsters: tuple = (monsters.Red, monsters.Bandit)
     items: list = [things.Knife, things.BlackCat, things.ShadowWolfBook]
@@ -46,15 +50,19 @@ class City(Locations):
     is_open = True
 
 
-class Tavern(City):
-    name: str = 'Таверна'
-    description: str = 'Здесь люди могут отдохнуть от странствий'
+class TavernDawnGlow(Locations):
+    name: str = 'Зарево Рассвета'
+    description: str = 'Здание из старого кирпича, со спальнями на втором этаже, которые располагаются над уютным' \
+                       ' залом с камином. В зале царят приглушенные разговоры.'
     actions: dict = dict()
     location_monsters: tuple = tuple()
     items: list = [things.Soup]
     rare_items = list()
     is_explored = False
     is_open = True
+
+    def __str__(self):
+        return f'таверна {self.name}'
 
 
 class Forest(Locations):
@@ -80,15 +88,15 @@ class Field(Locations):
 
 
 field = Field()
-city = City()
-tavern = Tavern()
+city_tumansk = TumanskCity()
+tavern_dawn_glow = TavernDawnGlow()
 forest = Forest()
 
-field.add_action('Город', city)
+field.add_action(f'{city_tumansk.name}', city_tumansk)
 field.add_action('Лес', forest)
-city.add_action('Поле', field)
-city.add_action('Таверна', tavern)
+city_tumansk.add_action('Поле', field)
+city_tumansk.add_action(f'{tavern_dawn_glow.name}', tavern_dawn_glow)
 forest.add_action('Поле', field)
 
-tavern.add_action('Город', city)
-tavern.add_action('Усталый путник', characters.weary_traveler)
+tavern_dawn_glow.add_action(f'{city_tumansk.name}', city_tumansk)
+tavern_dawn_glow.add_action('Усталый путник', characters.weary_traveler)

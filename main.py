@@ -11,7 +11,7 @@ class Game:
     def __init__(self):
         self.player = Player()
         self.current_location = None
-        self.current_location_monster: locations = locations.monsters.Monsters
+        self.current_location_monster: locations = locations.Monsters
 
         self.flight_states = ('Вы бежите изо всех сил', 'Быстрее, быстрее!!!', 'Сердце бешено колотится',
                               'Страх и адреналин смешиваются в крови',
@@ -162,7 +162,7 @@ class Game:
     def encounter_monsters(self):
         """Отвечает за встречу с монстром при переходе между локациями"""
         if self.current_location.location_monsters:
-            if randint(1, 4) == 1:
+            if randint(1, 1) == 1:
                 self.get_monster()
                 self.battle()
         else:
@@ -600,6 +600,6 @@ if __name__ == '__main__':
           'Элементом управления является набор простейших текстовых команд\n')
     game.print_help_info()
     game.player.name = input('Введите имя своего персонажа: ')
-    game.current_location = locations.field
+    game.current_location = locations.tavern_dawn_glow
     game.player.quest_journal.add_quest(quests.hello_quest)
     game.main()
